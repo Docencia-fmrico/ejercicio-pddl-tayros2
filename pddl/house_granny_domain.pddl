@@ -3,13 +3,18 @@
 
   (:types
     room corridor - location
-    door robot util gripper human
+    open_door close_door - door_request
+    bring_request
+    robot gripper human door util
   )
 
   (:predicates
     (robot_at ?r - robot ?l - location)
     (object_at ?u - util ?l - location)
-    (human_at ?r - human ?l - location)
+    (human_at ?h - human ?l - location)
+    (human_attended ?h - human)
+    (human_door_request ?h - human ?r - door_request ?ro - door)
+    (human_bring_request ?h - human ?r - bring_request ?ro - util)
     (high_prio)
     (not_high_prio)
     (high_prio_util ?u - util)
@@ -36,15 +41,26 @@
     )
   )
 
-  (:durative-action move
+  (:durative-action move_by_door
     :parameters (?r - robot ?from ?to - location ?d - door)
     :duration (= ?duration 2)
     :condition (and
       (at start(robot_at ?r ?from))
-      (or
-      (and (at start(connected_by_door ?from ?to ?d)) (at start (open ?d))) 
-      (at start(connected ?from ?to)))
-  
+      (at start(connected_by_door ?from ?to ?d)) 
+      (at start (open ?d))
+    )
+    :effect (and
+      (at start(not (robot_at ?r ?from)))
+      (at end(robot_at ?r ?to))
+    )
+  )
+
+  (:durative-action move_without_door
+    :parameters (?r - robot ?from ?to - location)
+    :duration (= ?duration 2)
+    :condition (and
+      (at start(robot_at ?r ?from))
+      (at start(connected ?from ?to)) 
     )
     :effect (and
       (at start(not (robot_at ?r ?from)))
