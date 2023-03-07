@@ -25,6 +25,10 @@
     (connected_by_door ?l1 ?l2 - location ?d - door)
     (open ?d - door)
     (close ?d - door)
+
+    (close_door_rerquest)
+    (open_door_request)
+    (pick_request)
   )
 
   (:durative-action open-door
@@ -72,7 +76,6 @@
     :parameters (?u - util ?l - location ?r - robot ?g - gripper)
     :duration(= ?duration 1)
     :condition (and
-      (at start (not_high_prio))
       (at start(gripper_at ?g ?r))
       (at start(object_at ?u ?l))
       (at start(robot_at ?r ?l))
@@ -86,25 +89,24 @@
     )
   )
 
-  (:durative-action pick_prio
-    :parameters (?u - util ?l - location ?r - robot ?g - gripper)
+  (:durative-action attend_pick_request
+    :parameters (?u - util ?l - location ?r - robot ?g - gripper ?h - human)
     :duration(= ?duration 1)
     :condition (and
-      (at start (high_prio))
-      (at start(high_prio_util ?u))
+      (at start (pick_request))
       (at start(gripper_at ?g ?r))
       (at start(object_at ?u ?l))
       (at start(robot_at ?r ?l))
       (at start(gripper_free ?g))
     )
     :effect (and
-      ;importantisimo indicar que el gancho deja de estar libre cuand empieza la accion
+      
       (at start(not (gripper_free ?g)))
       (at end(not (object_at ?u ?l)))
       (at end(robot_carry ?r ?g ?u))
-      (at start (not (high_prio)))
-      (at start (not (high_prio_util ?u)))
-      (at start (not_high_prio))
+      (at start (not (pick_request)))
+      (at end (human_attended ?h))
+
     )
   )
 
@@ -122,4 +124,36 @@
       (at end(not (robot_carry ?r ?g ?u)))
     )
   )
+
+    (:durative-action attend_close_door_request
+    :parameters (?r - robot ?l1 ?l2 - location ?d - door ?h - human)
+    :duration (= ?duration 1)
+    :condition (and
+      (at start (close_door_rerquest))
+      (at start(robot_at ?r ?l1))
+      (at start(close ?d))
+      (at start(connected_by_door ?l1 ?l2 ?d))
+    )
+    :effect (and
+      (at start(open ?d))
+      (at end(not (close ?d)))
+      (at end (human_attended ?h))
+    )
+  )
+
+  (:durative-action attend_open_door_request
+    :parameters (?r - robot ?l1 ?l2 - location ?d - door ?h - human)
+    :duration (= ?duration 1)
+    :condition (and
+      (at start (open_door_request))
+      (at start(robot_at ?r ?l1))
+      (at start(close ?d))
+      (at start(connected_by_door ?l1 ?l2 ?d))
+    )
+    :effect (and
+      (at start(open ?d))
+      (at end(not (close ?d)))
+      (at end (human_attended ?h))
+    )
+  ) 
 )

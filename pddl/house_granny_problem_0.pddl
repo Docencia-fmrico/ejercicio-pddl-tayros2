@@ -39,6 +39,7 @@
     ; High priority declaration:
     (high_prio)
     (high_prio_util tools)
+    (pick_request)
   )
 
   (:goal
