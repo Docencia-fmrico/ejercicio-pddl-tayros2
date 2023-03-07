@@ -16,7 +16,7 @@
     (gripper_free ?g - gripper)
     (gripper_at ?g - gripper ?r - robot)
     (robot_carry ?r - robot ?g - gripper ?u - util)
-    (connected ?l1 ?l2)
+    (connected ?l1 ?l2 - location)
     (connected_by_door ?l1 ?l2 - location ?d - door)
     (open ?d - door)
     (close ?d - door)
