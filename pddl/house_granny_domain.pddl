@@ -3,16 +3,18 @@
 
   (:types
     room corridor - location
-    door robot util gripper
+    door robot util gripper human
   )
 
   (:predicates
     (robot_at ?r - robot ?l - location)
     (object_at ?u - util ?l - location)
+    (human_at ?r - human ?l - location)
     (gripper_free ?g - gripper)
     (gripper_at ?g - gripper ?r - robot)
     (robot_carry ?r - robot ?g - gripper ?u - util)
-    (connected ?l1 ?l2 - location ?d - door)
+    (connected ?l1 ?l2)
+    (connected_by_door ?l1 ?l2 - location ?d - door)
     (open ?d - door)
     (close ?d - door)
   )
@@ -29,7 +31,7 @@
     :condition (and
       (at start(robot_at ?r ?l1))
       (at start(close ?d))
-      (at start(connected ?l1 ?l2 ?d))
+      (at start(connected_by_door ?l1 ?l2 ?d))
     )
     :effect (and
       (at start(open ?d))
@@ -42,8 +44,10 @@
     :duration (= ?duration 2)
     :condition (and
       (at start(robot_at ?r ?from))
-      (at start(connected ?from ?to ?d))
-      (at start (open ?d))
+      (or
+      (and (at start(connected_by_door ?from ?to ?d)) (at start (open ?d))) 
+      (at start(connected ?from ?to)))
+  
     )
     :effect (and
       (at end(increase (time) 1))

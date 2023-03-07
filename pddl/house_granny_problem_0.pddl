@@ -7,10 +7,12 @@
     tools clothes silverware towel - util
     robby walle - robot
     gripper1 gripper2 - gripper
+    granny - human
   )
   (:init
     (robot_at robby garage)
     (robot_at walle garage)
+    (human_at granny bedroom)
     (gripper_at gripper1 robby)
     (gripper_at gripper2 walle)
     (gripper_free gripper1)
@@ -19,14 +21,14 @@
     (object_at clothes garage)
     (object_at silverware garage)
     (object_at towel garage)
-    (connected garage Corridor DoorA)
-    (connected bathroom Corridor DoorB)
-    (connected bedroom Corridor DoorC)
-    (connected kitchen Corridor DoorD)
-    (connected Corridor garage DoorA)
-    (connected Corridor bathroom DoorB)
-    (connected Corridor bedroom DoorC)
-    (connected Corridor kitchen DoorD)
+    (connected_by_door garage Corridor DoorA)
+    (connected_by_door bathroom Corridor DoorB)
+    (connected_by_door bedroom Corridor DoorC)
+    (connected_by_door kitchen Corridor DoorD)
+    (connected_by_door Corridor garage DoorA)
+    (connected_by_door Corridor bathroom DoorB)
+    (connected_by_door Corridor bedroom DoorC)
+    (connected_by_door Corridor kitchen DoorD)
     (close DoorA)
     (close DoorB)
     (close DoorC)
