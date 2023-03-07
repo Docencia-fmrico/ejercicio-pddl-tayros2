@@ -1,48 +1,54 @@
 (define (problem robots-granny-house-problem)
   (:domain robots-granny-house)
   (:objects
-    garage bathroom bedroom kitchen - room
-    DoorA DoorB DoorC DoorD - door
-    Corridor - corridor
+    garage bathroom bedroom kitchen living_room - room
+    doorA doorB doorC doorD - door
     tools clothes silverware towel - util
-    robby walle - robot
-    gripper1 gripper2 - gripper
+    tay - robot
+    robot_gripper - gripper
     granny - human
   )
   (:init
-    (robot_at robby garage)
-    (robot_at walle garage)
+    ; Robot at living room and granny in bedroom:
+    (robot_at tay living_room)
     (human_at granny bedroom)
-    (gripper_at gripper1 robby)
-    (gripper_at gripper2 walle)
-    (gripper_free gripper1)
-    (gripper_free gripper2)
-    (object_at tools garage)
-    (object_at clothes garage)
-    (object_at silverware garage)
+    ; Robot's only gripper is free:
+    (gripper_at robot_gripper tay)
+    (gripper_free robot_gripper)
+    ; Objests are in no corresponding rooms at the start:
+    (object_at tools kitchen)
+    (object_at clothes living_room)
+    (object_at silverware living_room)
     (object_at towel garage)
-    (connected_by_door garage Corridor DoorA)
-    (connected_by_door bathroom Corridor DoorB)
-    (connected_by_door bedroom Corridor DoorC)
-    (connected_by_door kitchen Corridor DoorD)
-    (connected_by_door Corridor garage DoorA)
-    (connected_by_door Corridor bathroom DoorB)
-    (connected_by_door Corridor bedroom DoorC)
-    (connected_by_door Corridor kitchen DoorD)
+    ; Declare map (Using "home" gazebo's map edited):
+    (connected_by_door kitchen bathroom doorA)
+    (connected_by_door bathroom kitchen doorA)
+    (connected_by_door kitchen bedroom doorB)
+    (connected_by_door bedroom kitchen doorB)
+    (connected_by_door living_room garage doorC)
+    (connected_by_door garage living_room doorC)
+    (connected_by_door bedroom garage doorD)
+    (connected_by_door garage bedroom doorD)
+    (connected kitchen living_room)
+    (connected living_room kitchen)
+    ; All doors are closed:
+    (close doorA)
+    (close doorB)
+    (close doorC)
+    (close doorD)
+    ; High priority declaration:
     (high_prio)
-    (high_prio_util clothes)
-    (close DoorA)
-    (close DoorB)
-    (close DoorC)
-    (close DoorD)
   )
 
   (:goal
     (and
+      ; Objects must be in their corresponding room:
       (object_at tools garage)
       (object_at towel bathroom)
       (object_at clothes bedroom)
       (object_at silverware kitchen)
+      ; Human (in this case, granny) must be attended:
+      (human_attended granny)
     )
   )
 )
