@@ -1,5 +1,5 @@
 (define (domain robots-granny-house)
-  (:requirements :typing :fluents :durative-actions :universal-preconditions :conditional-effects :negative-preconditions :continuous-effects)
+  (:requirements :typing :fluents :durative-actions :universal-preconditions :conditional-effects :continuous-effects)
 
   (:types
     room corridor - location
@@ -10,6 +10,9 @@
     (robot_at ?r - robot ?l - location)
     (object_at ?u - util ?l - location)
     (human_at ?r - human ?l - location)
+    (high_prio)
+    (not_high_prio)
+    (high_prio_util ?u - util)
     (gripper_free ?g - gripper)
     (gripper_at ?g - gripper ?r - robot)
     (robot_carry ?r - robot ?g - gripper ?u - util)
@@ -17,12 +20,6 @@
     (connected_by_door ?l1 ?l2 - location ?d - door)
     (open ?d - door)
     (close ?d - door)
-  )
-
-  (:functions
-    (time)
-    (cost)
-    (priority ?u - util)
   )
 
   (:durative-action open-door
@@ -50,7 +47,6 @@
   
     )
     :effect (and
-      (at end(increase (time) 1))
       (at start(not (robot_at ?r ?from)))
       (at end(robot_at ?r ?to))
     )
@@ -60,6 +56,7 @@
     :parameters (?u - util ?l - location ?r - robot ?g - gripper)
     :duration(= ?duration 1)
     :condition (and
+      (at start (not_high_prio))
       (at start(gripper_at ?g ?r))
       (at start(object_at ?u ?l))
       (at start(robot_at ?r ?l))
@@ -70,9 +67,31 @@
       (at start(not (gripper_free ?g)))
       (at end(not (object_at ?u ?l)))
       (at end(robot_carry ?r ?g ?u))
-      (at end(increase (time) 1))
     )
   )
+
+  (:durative-action pick_prio
+    :parameters (?u - util ?l - location ?r - robot ?g - gripper)
+    :duration(= ?duration 1)
+    :condition (and
+      (at start (high_prio))
+      (at start(high_prio_util ?u))
+      (at start(gripper_at ?g ?r))
+      (at start(object_at ?u ?l))
+      (at start(robot_at ?r ?l))
+      (at start(gripper_free ?g))
+    )
+    :effect (and
+      ;importantisimo indicar que el gancho deja de estar libre cuand empieza la accion
+      (at start(not (gripper_free ?g)))
+      (at end(not (object_at ?u ?l)))
+      (at end(robot_carry ?r ?g ?u))
+      (at start (not (high_prio)))
+      (at start (not (high_prio_util ?u)))
+      (at start (not_high_prio))
+    )
+  )
+
   (:durative-action drop
     :parameters (?u - util ?l - location ?r - robot ?g - gripper)
     :duration(= ?duration 1)
@@ -85,7 +104,6 @@
       (at end(gripper_free ?g))
       (at end(object_at ?u ?l))
       (at end(not (robot_carry ?r ?g ?u)))
-      (at end(increase (cost) (* (priority ?u) (time))))
     )
   )
 )

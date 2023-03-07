@@ -29,15 +29,12 @@
     (connected_by_door Corridor bathroom DoorB)
     (connected_by_door Corridor bedroom DoorC)
     (connected_by_door Corridor kitchen DoorD)
+    (high_prio)
+    (high_prio_util clothes)
     (close DoorA)
     (close DoorB)
     (close DoorC)
     (close DoorD)
-
-    (= (priority tools) 1)
-    (= (priority clothes) 1)
-    (= (priority silverware) 1)
-    (= (priority towel) 10)
   )
 
   (:goal
@@ -47,8 +44,5 @@
       (object_at clothes bedroom)
       (object_at silverware kitchen)
     )
-  )
-  (:metric minimize
-    (cost)
   )
 )
