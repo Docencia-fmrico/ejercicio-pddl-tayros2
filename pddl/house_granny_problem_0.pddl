@@ -19,6 +19,8 @@
     (object_at clothes garage)
     (object_at silverware garage)
     (object_at towel garage)
+    (high_prio)
+    (high_prio_util clothes)
     (connected garage Corridor DoorA)
     (connected bathroom Corridor DoorB)
     (connected bedroom Corridor DoorC)
@@ -31,11 +33,6 @@
     (close DoorB)
     (close DoorC)
     (close DoorD)
-
-    (= (priority tools) 1)
-    (= (priority clothes) 1)
-    (= (priority silverware) 1)
-    (= (priority towel) 10)
   )
 
   (:goal
@@ -45,8 +42,5 @@
       (object_at clothes bedroom)
       (object_at silverware kitchen)
     )
-  )
-  (:metric minimize
-    (cost)
   )
 )
