@@ -39,7 +39,7 @@
     ; High priority declaration:
     (high_prio)
     (high_prio_util tools)
-    (pick_request)
+    (pick_request granny tools)
   )
 
   (:goal
@@ -50,7 +50,7 @@
       (object_at clothes bedroom)
       (object_at silverware kitchen)
       ; Human (in this case, granny) must be attended:
-      ;(human_attended granny)
+      (human_attended granny)
     )
   )
 )
