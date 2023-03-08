@@ -4,8 +4,7 @@
   (:types
     room corridor - location
     open_door close_door - door_request
-    bring_request
-    robot gripper human door util
+    bring_request robot gripper human door util
   )
 
   (:predicates
@@ -50,7 +49,7 @@
     :duration (= ?duration 2)
     :condition (and
       (at start(robot_at ?r ?from))
-      (at start(connected_by_door ?from ?to ?d)) 
+      (at start(connected_by_door ?from ?to ?d))
       (at start (open ?d))
     )
     :effect (and
@@ -64,7 +63,7 @@
     :duration (= ?duration 2)
     :condition (and
       (at start(robot_at ?r ?from))
-      (at start(connected ?from ?to)) 
+      (at start(connected ?from ?to))
     )
     :effect (and
       (at start(not (robot_at ?r ?from)))
@@ -76,6 +75,7 @@
     :parameters (?u - util ?l - location ?r - robot ?g - gripper)
     :duration(= ?duration 1)
     :condition (and
+      (at start (not_high_prio))
       (at start(gripper_at ?g ?r))
       (at start(object_at ?u ?l))
       (at start(robot_at ?r ?l))
@@ -98,15 +98,15 @@
       (at start(object_at ?u ?l))
       (at start(robot_at ?r ?l))
       (at start(gripper_free ?g))
+      (at start (high_prio_util ?u))
     )
     :effect (and
-      
       (at start(not (gripper_free ?g)))
       (at end(not (object_at ?u ?l)))
       (at end(robot_carry ?r ?g ?u))
       (at start (not (pick_request)))
-      (at end (human_attended ?h))
-
+      (at end (not_high_prio))
+      (at end(not (high_prio_util ?u)))
     )
   )
 
@@ -125,7 +125,26 @@
     )
   )
 
-    (:durative-action attend_close_door_request
+  (:durative-action drop_request
+    :parameters (?u - util ?l - location ?r - robot ?g - gripper ?h - human)
+    :duration(= ?duration 1)
+    :condition (and
+      (at start(gripper_at ?g ?r))
+      (at start(robot_at ?r ?l))
+      (at start(robot_carry ?r ?g ?u))
+      (at start (human_at ?h ?l))
+    )
+    :effect (and
+      (at end(gripper_free ?g))
+      (at end(object_at ?u ?l))
+      (at end(not (robot_carry ?r ?g ?u)))
+      (at start (not (pick_request)))
+      (at end (human_attended ?h))
+      (at end (not_high_prio))
+    )
+  )
+
+  (:durative-action attend_close_door_request
     :parameters (?r - robot ?l1 ?l2 - location ?d - door ?h - human)
     :duration (= ?duration 1)
     :condition (and
@@ -133,11 +152,13 @@
       (at start(robot_at ?r ?l1))
       (at start(close ?d))
       (at start(connected_by_door ?l1 ?l2 ?d))
+      (at start (high_prio))
     )
     :effect (and
       (at start(open ?d))
       (at end(not (close ?d)))
       (at end (human_attended ?h))
+      (at end (not_high_prio))
     )
   )
 
@@ -149,11 +170,13 @@
       (at start(robot_at ?r ?l1))
       (at start(close ?d))
       (at start(connected_by_door ?l1 ?l2 ?d))
+      (at start (high_prio))
     )
     :effect (and
       (at start(open ?d))
       (at end(not (close ?d)))
       (at end (human_attended ?h))
+      (at end (not_high_prio))
     )
-  ) 
+  )
 )

@@ -50,7 +50,7 @@
       (object_at clothes bedroom)
       (object_at silverware kitchen)
       ; Human (in this case, granny) must be attended:
-      (human_attended granny)
+      ;(human_attended granny)
     )
   )
 )
