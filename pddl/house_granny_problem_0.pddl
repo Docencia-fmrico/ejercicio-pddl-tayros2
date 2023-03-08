@@ -29,28 +29,29 @@
     (connected_by_door garage living_room doorC)
     (connected_by_door bedroom garage doorD)
     (connected_by_door garage bedroom doorD)
+    
     (connected kitchen living_room)
     (connected living_room kitchen)
     ; All doors are closed:
-    (close doorA)
+    (open doorA)
     (close doorB)
     (close doorC)
     (close doorD)
-    ; High priority declaration:
-    (high_prio)
-    (high_prio_util tools)
-    ;(open_door_request granny doorA)
+
+    (pick_request granny towel)
   )
 
   (:goal
     (and
       ; Objects must be in their corresponding room:
-      (object_at tools garage)
-      (object_at towel bathroom)
-      ;(object_at clothes bedroom)
-      (object_at silverware kitchen)
+      ;(move_object clothes bedroom)
+      ;(move_object tools bathroom)
+     ;(move_object towel bathroom)
+      ;(move_object clothes bedroom)
+      (move_object silverware kitchen)
+
       ; Human (in this case, granny) must be attended:
-      ;(human_attended granny)
+      (human_attended granny)
     )
   )
 )
