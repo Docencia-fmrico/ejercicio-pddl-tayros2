@@ -39,7 +39,7 @@
     ; High priority declaration:
     (high_prio)
     (high_prio_util tools)
-    (pick_request granny tools)
+    ;(open_door_request granny doorA)
   )
 
   (:goal
@@ -47,10 +47,10 @@
       ; Objects must be in their corresponding room:
       (object_at tools garage)
       (object_at towel bathroom)
-      (object_at clothes bedroom)
+      ;(object_at clothes bedroom)
       (object_at silverware kitchen)
       ; Human (in this case, granny) must be attended:
-      (human_attended granny)
+      ;(human_attended granny)
     )
   )
 )

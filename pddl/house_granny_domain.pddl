@@ -88,27 +88,6 @@
     )
   )
 
-  (:durative-action attend_pick_request
-    :parameters (?u - util ?l - location ?r - robot ?g - gripper ?h - human)
-    :duration(= ?duration 1)
-    :condition (and
-      (at start (pick_request ?h ?u))
-      (at start(gripper_at ?g ?r))
-      (at start(object_at ?u ?l))
-      (at start(robot_at ?r ?l))
-      (at start(gripper_free ?g))
-      (at start (high_prio_util ?u))
-    )
-    :effect (and
-      (at start(not (gripper_free ?g)))
-      (at end(not (object_at ?u ?l)))
-      (at end(robot_carry ?r ?g ?u))
-      (at start (not (pick_request ?h ?u)))
-      (at end (not_high_prio))
-      (at end(not (high_prio_util ?u)))
-    )
-  )
-
   (:durative-action drop
     :parameters (?u - util ?l - location ?r - robot ?g - gripper)
     :duration(= ?duration 1)
@@ -124,22 +103,17 @@
     )
   )
 
-  (:durative-action drop_request
+
+  (:durative-action attend_pick_request
     :parameters (?u - util ?l - location ?r - robot ?g - gripper ?h - human)
     :duration(= ?duration 1)
     :condition (and
-      (at start(gripper_at ?g ?r))
-      (at start(robot_at ?r ?l))
-      (at start(robot_carry ?r ?g ?u))
-      (at start (human_at ?h ?l))
+      (at start (pick_request ?h ?u))
+      (at end(object_at ?u ?l))
     )
     :effect (and
-      (at end(gripper_free ?g))
-      (at end(object_at ?u ?l))
-      (at end(not (robot_carry ?r ?g ?u)))
-      (at start (not (pick_request ?h ?u)))
+      (at end (not (pick_request ?h ?u)))
       (at end (human_attended ?h))
-      (at end (not_high_prio))
     )
   )
 
@@ -148,16 +122,11 @@
     :duration (= ?duration 1)
     :condition (and
       (at start (close_door_request ?h ?d))
-      (at start(robot_at ?r ?l1))
-      (at start(close ?d))
-      (at start(connected_by_door ?l1 ?l2 ?d))
-      (at start (high_prio))
+      (at start (close ?d))
     )
     :effect (and
-      (at start(open ?d))
-      (at end(not (close ?d)))
+      (at end (not (close_door_request ?h ?d)))
       (at end (human_attended ?h))
-      (at end (not_high_prio))
     )
   )
 
@@ -166,16 +135,11 @@
     :duration (= ?duration 1)
     :condition (and
       (at start (open_door_request ?h ?d))
-      (at start(robot_at ?r ?l1))
-      (at start(close ?d))
-      (at start(connected_by_door ?l1 ?l2 ?d))
-      (at start (high_prio))
+      (at start (open ?d))
     )
     :effect (and
-      (at start(open ?d))
-      (at end(not (close ?d)))
+      (at end (not (open_door_request ?h ?d)))
       (at end (human_attended ?h))
-      (at end (not_high_prio))
     )
   )
 )
