@@ -10,16 +10,16 @@
   )
   (:init
     ; Robot at living room and granny in bedroom:
-    (robot_at tay living_room)
-    (human_at granny bedroom)
+    (robot_at tay kitchen)
+    (human_at granny bathroom)
     ; Robot's only gripper is free:
     (gripper_at robot_gripper tay)
     (gripper_free robot_gripper)
     ; Objests are in no corresponding rooms at the start:
-    (object_at tools kitchen)
+    (object_at tools bathroom)
     (object_at clothes living_room)
     (object_at silverware living_room)
-    (object_at towel garage)
+    (object_at towel kitchen)
     ; Declare map (Using "home" gazebo's map edited):
     (connected_by_door kitchen bathroom doorA)
     (connected_by_door bathroom kitchen doorA)
@@ -36,20 +36,24 @@
     (open doorA)
     (close doorB)
     (close doorC)
-    (close doorD)
+    (open doorD)
 
-    (pick_request granny tools)
+    (pick_request granny towel)
+    (pick_request granny silverware)
+		(close_door_request granny doorA)
   )
 
   (:goal
     (and
       ;Objects must be in their corresponding room:
-      (move_object clothes bedroom)
       (move_object tools garage)
       (move_object towel bathroom)
       (move_object silverware kitchen)
 
       ; Human (in this case, granny) must be attended:
+			(object_at towel bathroom)
+      (object_at clothes bathroom)
+			(close doorA)
       (human_attended granny)
     )
   )

@@ -3,8 +3,7 @@
 
   (:types
     room corridor - location
-    open_door close_door - door_request
-    bring_request robot gripper human door util
+    robot gripper human door util
   )
 
   (:predicates
@@ -135,7 +134,7 @@
     )
   )
 
-    (:action attend_close_door_request
+  (:action attend_close_door_request
     :parameters (?d - door ?h - human)
     :precondition (and
       (close_door_request ?h ?d)
@@ -148,14 +147,13 @@
   )
 
   (:action organize_object
-  :parameters (?h - human ?u - util ?l - location)
-  :precondition (and 
-    (human_attended ?h)
-    (object_at ?u ?l)
-  )
-
-  :effect (and
-    (move_object ?u ?l)
-  )
-  )
+    :parameters (?h - human ?u - util ?l - location)
+    :precondition (and
+      (human_attended ?h)
+      (object_at ?u ?l)
+    )
+    :effect (and
+      (move_object ?u ?l)
+    )
+    )
 )
