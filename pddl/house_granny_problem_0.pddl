@@ -29,7 +29,7 @@
     (connected_by_door garage living_room doorC)
     (connected_by_door bedroom garage doorD)
     (connected_by_door garage bedroom doorD)
-    
+
     (connected kitchen living_room)
     (connected living_room kitchen)
     ; All doors are closed:

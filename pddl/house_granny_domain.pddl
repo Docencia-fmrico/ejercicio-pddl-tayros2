@@ -26,86 +26,90 @@
     (pick_request ?h - human ?u - util)
   )
 
-  (:action open-door
+  (:durative-action open-door
     :parameters (?r - robot ?l1 ?l2 - location ?d - door)
-    :precondition (and
-      (robot_at ?r ?l1)
-      (close ?d)
-      (connected_by_door ?l1 ?l2 ?d)
+    :duration (= ?duration 1)
+    :condition (and
+      (at start(robot_at ?r ?l1))
+      (at start(close ?d))
+      (at start(connected_by_door ?l1 ?l2 ?d))
     )
     :effect (and
-      (open ?d)
-      (not (close ?d))
+      (at end(open ?d))
+      (at end(not (close ?d)))
     )
   )
 
-    (:action close-door
+  (:durative-action close-door
     :parameters (?r - robot ?l1 ?l2 - location ?d - door)
-    :precondition (and
-      (robot_at ?r ?l1)
-      (open ?d)
-      (connected_by_door ?l1 ?l2 ?d)
+    :duration (= ?duration 1)
+    :condition (and
+      (at start(robot_at ?r ?l1))
+      (at start(open ?d))
+      (at start(connected_by_door ?l1 ?l2 ?d))
     )
     :effect (and
-      (close ?d)
-      (not (open ?d))
+      (at end(close ?d))
+      (at end(not (open ?d)))
     )
   )
-  
 
-  (:action move_by_door
+  (:durative-action move_by_door
     :parameters (?r - robot ?from ?to - location ?d - door)
-    :precondition (and
-      (robot_at ?r ?from)
-      (connected_by_door ?from ?to ?d)
-      (open ?d)
+    :duration (= ?duration 1)
+    :condition (and
+      (at start(robot_at ?r ?from))
+      (at start(connected_by_door ?from ?to ?d))
+      (at start(open ?d))
     )
     :effect (and
-      (not (robot_at ?r ?from))
-      (robot_at ?r ?to)
+      (at end(not (robot_at ?r ?from)))
+      (at end(robot_at ?r ?to))
     )
   )
 
-  (:action move_without_door
+  (:durative-action move_without_door
     :parameters (?r - robot ?from ?to - location)
-    :precondition (and
-      (robot_at ?r ?from)
-      (connected ?from ?to)
+    :duration (= ?duration 1)
+    :condition (and
+      (at start(robot_at ?r ?from))
+      (at start(connected ?from ?to))
     )
     :effect (and
-      (not (robot_at ?r ?from))
-      (robot_at ?r ?to)
+      (at end(not (robot_at ?r ?from)))
+      (at end(robot_at ?r ?to))
     )
   )
 
-  (:action pick
+  (:durative-action pick
     :parameters (?u - util ?l - location ?r - robot ?g - gripper)
-    :precondition (and
-      (gripper_at ?g ?r)
-      (object_at ?u ?l)
-      (robot_at ?r ?l)
-      (gripper_free ?g)
+    :duration (= ?duration 1)
+    :condition (and
+      (at start(gripper_at ?g ?r))
+      (at start(object_at ?u ?l))
+      (at start(robot_at ?r ?l))
+      (at start(gripper_free ?g))
     )
     :effect (and
       ;importantisimo indicar que el gancho deja de estar libre cuand empieza la accion
-      (not (gripper_free ?g))
-      (not (object_at ?u ?l))
-      (robot_carry ?r ?g ?u)
+      (at start(not (gripper_free ?g)))
+      (at end(not (object_at ?u ?l)))
+      (at end(robot_carry ?r ?g ?u))
     )
   )
 
-  (:action drop
+  (:durative-action drop
     :parameters (?u - util ?l - location ?r - robot ?g - gripper)
-
-    :precondition (and
-      (gripper_at ?g ?r)
-      (robot_at ?r ?l)
-      (robot_carry ?r ?g ?u)
+    :duration (= ?duration 1)
+    :condition (and
+      (at start(gripper_at ?g ?r))
+      (at start(robot_at ?r ?l))
+      (at start(robot_carry ?r ?g ?u))
     )
     :effect (and
-      (gripper_free ?g)
-      (object_at ?u ?l)
-      (not (robot_carry ?r ?g ?u))
+      (at end(gripper_free ?g))
+      (at end(object_at ?u ?l))
+      (at end(not (robot_carry ?r ?g ?u)))
     )
   )
 
@@ -155,5 +159,5 @@
     :effect (and
       (move_object ?u ?l)
     )
-    )
+  )
 )
