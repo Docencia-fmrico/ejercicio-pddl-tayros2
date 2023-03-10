@@ -39,6 +39,9 @@
     (close doorD)
 
     (pick_request granny tools)
+
+    ;descomentar si la abuela no solicita objeto
+    ;(no_prio_util_remaining) 
   )
 
   (:goal

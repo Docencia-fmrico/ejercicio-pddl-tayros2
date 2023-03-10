@@ -24,7 +24,9 @@
     (close_door_request ?h - human ?d - door)
     (open_door_request ?h - human ?d - door)
     (pick_request ?h - human ?u - util)
-    (no_prio_util_remaining)
+
+    ; testing prio y durative actions
+    (no_prio_task_remaining)
   )
 
   (:durative-action open-door
@@ -55,30 +57,27 @@
     )
   )
 
-  (:durative-action move_by_door
+  (:action move_by_door
     :parameters (?r - robot ?from ?to - location ?d - door)
-    :duration (= ?duration 1)
-    :condition (and
-      (at start(robot_at ?r ?from))
-      (at start(connected_by_door ?from ?to ?d))
-      (at start(open ?d))
+    :precondition (and
+      (robot_at ?r ?from)
+      (connected_by_door ?from ?to ?d)
     )
     :effect (and
-      (at end(not (robot_at ?r ?from)))
-      (at end(robot_at ?r ?to))
+      (not (robot_at ?r ?from))
+      (robot_at ?r ?to)
     )
   )
 
-  (:durative-action move_without_door
+  (:action move_without_door
     :parameters (?r - robot ?from ?to - location)
-    :duration (= ?duration 1)
-    :condition (and
-      (at start(robot_at ?r ?from))
-      (at start(connected ?from ?to))
+    :precondition (and
+      (robot_at ?r ?from)
+      (connected ?from ?to)
     )
     :effect (and
-      (at end(not (robot_at ?r ?from)))
-      (at end(robot_at ?r ?to))
+      (not (robot_at ?r ?from))
+      (robot_at ?r ?to)
     )
   )
 
@@ -86,7 +85,7 @@
     :parameters (?u - util ?l - location ?r - robot ?g - gripper)
     :duration (= ?duration 1)
     :condition (and
-      (at start(no_prio_util_remaining))
+      (at start(no_prio_task_remaining))
       (at start(gripper_at ?g ?r))
       (at start(object_at ?u ?l))
       (at start(robot_at ?r ?l))
