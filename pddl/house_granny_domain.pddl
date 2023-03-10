@@ -57,6 +57,8 @@
     )
   )
 
+  ; acciones instantaneas ya que sino atraviesa a la vez una habitacion
+  ; con puerta y una sin puerta estando en 2 sitios distintos a la vez
   (:action move_by_door
     :parameters (?r - robot ?from ?to - location ?d - door)
     :precondition (and
@@ -69,6 +71,8 @@
     )
   )
 
+  ; acciones instantaneas ya que sino atraviesa a la vez una habitacion
+  ; con puerta y una sin puerta estando en 2 sitios distintos a la vez
   (:action move_without_door
     :parameters (?r - robot ?from ?to - location)
     :precondition (and
