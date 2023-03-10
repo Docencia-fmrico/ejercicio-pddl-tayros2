@@ -159,6 +159,7 @@
     :effect (and
       (not (open_door_request ?h ?d))
       (human_attended ?h)
+      (no_prio_task_remaining)
     )
   )
 
@@ -171,6 +172,7 @@
     :effect (and
       (not (close_door_request ?h ?d))
       (human_attended ?h)
+      (no_prio_task_remaining)
     )
   )
 

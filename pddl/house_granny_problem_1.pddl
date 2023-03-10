@@ -29,7 +29,7 @@
     (connected_by_door garage living_room doorC)
     (connected_by_door bedroom garage doorD)
     (connected_by_door garage bedroom doorD)
-    
+
     (connected kitchen living_room)
     (connected living_room kitchen)
     ; All doors are closed:
@@ -38,9 +38,7 @@
     (close doorC)
     (open doorD)
 
-    (pick_request granny towel)
-    (pick_request granny silverware)
-		(close_door_request granny doorA)
+    (close_door_request granny doorA)
   )
 
   (:goal
@@ -51,9 +49,9 @@
       (move_object silverware kitchen)
 
       ; Human (in this case, granny) must be attended:
-			(object_at towel bathroom)
+      (object_at towel bathroom)
       (object_at clothes bathroom)
-			(close doorA)
+      (close doorA)
       (human_attended granny)
     )
   )

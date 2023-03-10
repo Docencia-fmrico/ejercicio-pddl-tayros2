@@ -19,7 +19,7 @@
     (human_at granny bedroom)
     ; Robot is carrying the silverware in the gripper:
     (gripper_at robot_gripper tay)
-    (gripper_free robot_gripper)
+    ;(gripper_free robot_gripper) no esta libre el gancho ya que va a llevar un objeto consigo
     (robot_carry tay robot_gripper silverware)
     ; Declare map (Using "home" gazebo's map edited):
     (connected_by_door kitchen bathroom doorA)
@@ -30,7 +30,7 @@
     (connected_by_door garage living_room doorC)
     (connected_by_door bedroom garage doorD)
     (connected_by_door garage bedroom doorD)
-    
+
     (connected kitchen living_room)
     (connected living_room kitchen)
 
@@ -41,10 +41,7 @@
     (close doorD)
 
     ; Granny request to take the clothes, open door "A" and close door "C":
-    (pick_request granny clothes)
-
     (open_door_request granny doorA)
-    (close_door_request granny doorC)
   )
 
   (:goal
