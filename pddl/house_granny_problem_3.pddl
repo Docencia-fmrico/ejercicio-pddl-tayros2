@@ -40,26 +40,26 @@
     (open doorC)
     (close doorD)
 
-    ; Granny request to take the clothes, open door "A" and close door "C":
-    (open_door_request granny doorA)
+    ;importante inicializar esta precondicion al no haber en el problema
+    ;ninguna tarea con prioridad.
+    (no_prio_task_remaining)
   )
 
   (:goal
     (and
       ;Objects must be in their corresponding room:
-      (move_object clothes bedroom)
-      (move_object tools garage)
-      (move_object towel bathroom)
-      (move_object silverware kitchen)
+      ;aqui ya no es move_objet ya que no pide nunguna tarea ningun humano.
+      ;son tareas "basicas"
+      (object_at clothes bedroom)
+      (object_at tools garage)
+      (object_at towel bathroom)
+      (object_at silverware kitchen)
 
       ; Door "A" must be open and the rest closed:
       (open doorA)
       (close doorB)
       (close doorC)
       (close doorD)
-
-      ; Human (in this case, granny) must be attended:
-      (human_attended granny)
     )
   )
 )

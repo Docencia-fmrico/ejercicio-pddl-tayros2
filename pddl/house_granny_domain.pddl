@@ -114,7 +114,8 @@
       (at start(pick_request ?h ?u))
     )
     :effect (and
-      ;importantisimo indicar que el gancho deja de estar libre cuand empieza la accion
+      ;importe indicar que el gancho deja de estar libre cuando empieza la acción
+      ;para que solo coja un objeto
       (at start(not (gripper_free ?g)))
       (at end(not (object_at ?u ?l)))
       (at end(robot_carry ?r ?g ?u))
