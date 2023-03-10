@@ -24,6 +24,7 @@
     (close_door_request ?h - human ?d - door)
     (open_door_request ?h - human ?d - door)
     (pick_request ?h - human ?u - util)
+    (no_prio_util_remaining)
   )
 
   (:durative-action open-door
@@ -85,6 +86,7 @@
     :parameters (?u - util ?l - location ?r - robot ?g - gripper)
     :duration (= ?duration 1)
     :condition (and
+      (at start(no_prio_util_remaining))
       (at start(gripper_at ?g ?r))
       (at start(object_at ?u ?l))
       (at start(robot_at ?r ?l))
@@ -95,6 +97,25 @@
       (at start(not (gripper_free ?g)))
       (at end(not (object_at ?u ?l)))
       (at end(robot_carry ?r ?g ?u))
+    )
+  )
+
+  (:durative-action pick_prio
+    :parameters (?u - util ?l - location ?r - robot ?g - gripper ?h - human)
+    :duration (= ?duration 1)
+    :condition (and
+      (at start(gripper_at ?g ?r))
+      (at start(object_at ?u ?l))
+      (at start(robot_at ?r ?l))
+      (at start(gripper_free ?g))
+      (at start(pick_request ?h ?u))
+    )
+    :effect (and
+      ;importantisimo indicar que el gancho deja de estar libre cuand empieza la accion
+      (at start(not (gripper_free ?g)))
+      (at end(not (object_at ?u ?l)))
+      (at end(robot_carry ?r ?g ?u))
+      (at end(no_prio_task_remaining))
     )
   )
 
