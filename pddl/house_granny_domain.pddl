@@ -16,6 +16,7 @@
     (gripper_at ?g - gripper ?r - robot)
     (robot_carry ?r - robot ?g - gripper ?u - util)
     (connected_by_door ?l1 ?l2 - location ?d - door)
+    (connected ?l1 ?l2 - location)
     (open ?d - door)
     (close ?d - door)
 
@@ -64,6 +65,19 @@
     :condition (and
       (at start(robot_at ?r ?from))
       (at start(connected_by_door ?from ?to ?d))
+    )
+    :effect (and
+      (at start(not (robot_at ?r ?from)))
+      (at end(robot_at ?r ?to))
+    )
+  )
+
+  (:durative-action move_without_door
+    :parameters (?r - robot ?from ?to - location)
+    :duration ( = ?duration 5)
+    :condition (and
+      (at start(robot_at ?r ?from))
+      (at start(connected ?from ?to))
     )
     :effect (and
       (at start(not (robot_at ?r ?from)))

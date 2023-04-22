@@ -2,7 +2,7 @@
   (:domain robots-granny-house)
   (:objects
     garage bathroom bedroom kitchen living_room - room
-    doorA doorB doorC doorD doorE - door
+    doorA doorB doorC doorD - door
     tools clothes silverware towel - util
     tay - robot
     robot_gripper - gripper
@@ -30,14 +30,13 @@
     (connected_by_door bedroom garage doorD)
     (connected_by_door garage bedroom doorD)
 
-    (connected_by_door kitchen living_room doorE)
-    (connected_by_door living_room kitchen doorE)
+    (connected kitchen living_room)
+    (connected living_room kitchen)
     ; All doors are closed:
     (open doorA)
     (close doorB)
     (close doorC)
     (close doorD)
-    (close doorE)
 
     (pick_request granny tools)
     ;descomentar si la abuela no solicita objeto
